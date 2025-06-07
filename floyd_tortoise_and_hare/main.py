@@ -1,3 +1,10 @@
+"""
+Title: Detect a cycle in a Linked List using Floyd's Tortoise and Hare Algorithm
+Author: Miroslav Vergov
+Date: 06/06/2025
+Description:
+    This script implements Floyd's Cycle Detection Algorithm to find a node cycle in a Linked List.
+"""
 class Node:
     """
     A simple singly-linked list node.
