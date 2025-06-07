@@ -1,0 +1,102 @@
+**3Sum (Two‐Pointer) Algorithm – Detailed Notes**
+
+---
+
+### 1. **Problem Restatement**
+
+* **Input:** Array `nums` of $n$ integers.
+* **Output:** All *unique* triplets $[a,b,c]$ with $a+b+c=0$.
+* **Requirement:** No duplicate triplets, regardless of ordering.
+
+---
+
+### 2. **High-Level Strategy**
+
+1. **Sort** `nums` → enables ordered traversal & duplicate skipping.
+2. **Fix** one element at a time (index `i`).
+3. **Find** complementary pair with two pointers (`L` & `R`) in the subarray to the right.
+4. **Skip** duplicates at both the “fixed” and pointer levels.
+
+---
+
+### 3. **Algorithm Steps**
+
+1. **Sort**
+
+   * `nums.sort()`
+   * Cost: $O(n\log n)$.
+
+2. **Iterate** `i` from `0` to `n−3`
+
+   * Let `x = nums[i]`.
+   * **Duplicate‐check (fixed):**
+     If `i > 0` *and* `nums[i] == nums[i−1]`, then `continue`.
+
+3. **Two-Pointer Setup**
+
+   * `L = i + 1`, `R = n − 1`.
+
+4. **Scan for pairs**
+   While `L < R`:
+
+   1. Compute `s = x + nums[L] + nums[R]`.
+   2. **If** `s < 0` → increment `L` (need larger sum).
+   3. **Elif** `s > 0` → decrement `R` (need smaller sum).
+   4. **Else** (`s == 0`):
+
+      * Append `[x, nums[L], nums[R]]` to result.
+      * **Advance both pointers:**
+
+        * `L += 1`, `R -= 1`.
+      * **Skip duplicates (inside):**
+
+        * While `L < R` *and* `nums[L] == nums[L−1]`, do `L += 1`.
+        * While `L < R` *and* `nums[R] == nums[R+1]`, do `R -= 1`.
+
+5. **Return** collected triplets.
+
+---
+
+### 4. **Correctness Rationale**
+
+* **Sorting** ensures that for any fixed `x`, the subarray `nums[i+1…]` is in non-decreasing order.
+* **Two-pointer** exploits order:
+
+  * If sum too small, move left pointer rightward to increase it.
+  * If sum too large, move right pointer leftward to decrease it.
+* **Duplicate skipping** at each stage guarantees **uniqueness**:
+
+  * **Fixed duplicates:** don’t re-process the same `x`.
+  * **Pointer duplicates:** don’t re-record the same $[x,y,z]$.
+
+---
+
+### 5. **Complexity Analysis**
+
+* **Time:**
+
+  * Sort → $O(n\log n)$.
+  * Outer loop runs $\approx n$ times; each two-pointer scan is $O(n)$.
+  * ⇒ **Overall:** $O(n^2)$.
+
+* **Space:**
+
+  * **Auxiliary:** $O(\log n)$ for sorting recursion.
+  * **Output list:** up to $O(n^2)$ in the worst (rare) case.
+
+---
+
+### 6. **Edge Cases**
+
+* **Length < 3:** return `[]` immediately.
+* **All zeros:** `[0,0,0]` only once (pointer logic handles).
+* **No valid triplet:** result remains empty.
+* **Large negative/positive values:** arithmetic still valid within integer bounds.
+
+---
+
+### 7. **Key Takeaways**
+
+* **Sorting + two-pointer** is a classic pattern for “sum = target” problems.
+* Proper **duplicate checks** are crucial to correctness and avoiding extra work.
+* Runs efficiently in $O(n^2)$, suitable for $n$ up to a few thousand.
